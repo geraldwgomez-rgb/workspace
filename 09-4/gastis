@@ -1,0 +1,9 @@
+Create database SMC proyecto;
+Use SMC proyecto;
+Create table Gastos (
+    id gastos INT primary key ,
+    extraordinarios INT,
+    FIJOS INT,
+   descripción VARCHAR );
+// los tres primeros son INT por que solo se admiten datos numericos
+// y el ultimo dato es tipo VARCHAR por que solo se admitirian textos

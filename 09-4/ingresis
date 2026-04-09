@@ -1,0 +1,11 @@
+Create database SMC proyecto;
+Use SMC proyecto;
+Create table Ingresos(
+    id_ ingresos VARCHAR primary key ,
+   ingresos extraordinarios INT,
+   ingresos fijos INT,
+   diferidos INT) ;
+
+   // el primero es varchar por que so  los tipos de ingresos y su fuente.
+   // los ultimos son INT por que son los ingresos monetarios recibidos
+   

@@ -1,0 +1,9 @@
+Create database SMC proyecto;
+Use SMC proyecto;
+Create table categories (
+    id_categoria INT primary key ,
+    tipo movimiento varchar,
+    nombre varchar );
+
+    // los varchar son para expecificar y nombrar que tipo de movimiento es y su nombre , atravez de textos
+    // El int es como la fecha de publicacion del movimiento

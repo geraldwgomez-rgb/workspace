@@ -1,0 +1,12 @@
+Create database SMC proyecto;
+Use SMC proyecto;
+Create table Sistema SMC (
+    id_cuenta VARCHAR primary key ,
+    USUARIO VARCHAR(50),
+    PRESUPUESTO INT ,
+    CATEGORIA VARCHAR  );
+
+// LOS 3 que son varchar son para expresar cualitativamente datos de nombres.
+// el INT es por que son el monto adecuado por el usuario numericamnte hablando
+
+
