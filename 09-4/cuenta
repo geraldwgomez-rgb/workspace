@@ -1,9 +1,0 @@
-Create database SMC proyecto;
-Use SMC proyecto;
-Create table Cuenta (
-    id_cuenta INT primary key ,
-    NOMBRE varchar,
-    DIVISA ENUM );
-    // INT el dia de la cuenta
-    // NOMBRE PARA MODIFICAR EL NOMBRE DE LA CEUNTA , TEXT
-    // ENUM para enumerar las distintas monedas 
