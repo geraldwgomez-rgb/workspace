@@ -1,2 +1,6 @@
 let nota= 56;
-nota>=60 ? console.log("Aprobado") : console.log("reprobado");
+if (nota >= 60) {
+    console.log("Aprobado");
+} else {
+    console.log("Reprobado");
+}
