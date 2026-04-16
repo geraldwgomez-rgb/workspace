@@ -1,4 +1,4 @@
-let dia=2;
+let dia=8;
 
 switch (dia) {
     case 1:
@@ -23,5 +23,5 @@ switch (dia) {
         console.log("Domingo");
         break;    
     default:
-        console.log("Día no válido");
+        console.log("invalido");
 }
