@@ -1,44 +1,46 @@
-# 📦 Mapa Conceptual de Componentes (Arquitectura Frontend)
+# 📦 Mapa Conceptual de Componentes (Estructura Real del Proyecto)
 
 ```mermaid
-graph LR
-    subgraph SRC [src / Directorio Principal]
+graph TD
+    %% Estilos explícitos para alto contraste (Fondo claro/gris, texto negro)
+    classDef modulo fill:#f5f5f5,stroke:#333,stroke-width:1.5px,color:#000;
+    classDef layout fill:#fff3e0,stroke:#ff9800,stroke-width:1.5px,color:#000;
+    classDef common fill:#e1f5fe,stroke:#03a9f4,stroke-width:1.5px,color:#000;
+
+    %% Carpeta Principal que se ve en tu captura
+    subgraph Componentes [Estructura de Carpetas del Proyecto]
         direction TB
+
+        %% Módulos del Sistema
+        C_Common[📁 common / Componentes Globales UI]:::common
+        C_Layout[📁 layout / Estructura: Navbar, Sidebar]:::layout
+        C_Pages[📁 pages / Enrutador y Vistas principales]:::modulo
+
+        %% Carpetas por Entidad / Funcionalidad
+        C_Auth[📁 auth / Login y Registro]:::modulo
+        C_Dash[📁 dashboard / Panel General]:::modulo
+        C_Gastos[📁 gastos / Gestión Financiera]:::modulo
+        C_Ingresos[📁 ingresos / Gestión Financiera]:::modulo
+        C_Presup[📁 presupuestos / Límites y Periodos]:::modulo
         
-        subgraph UI [components/ui - Atómicos]
-            B[Button.jsx] --- Input[Input.jsx]
-            Input --- Card[Card.jsx]
-            Card --- Modal[Modal.jsx]
-        end
-
-        subgraph LAYOUT [components/layout - Estructura]
-            Nav[Navbar.jsx]
-            Side[Sidebar.jsx]
-            Prot[ProtectedLayout.jsx]
-        end
-
-        subgraph VIEWS [views - Páginas y Vistas]
-            A_V[Auth: Login / Register]
-            F_V[Finanzas: Gastos / Ingresos / Presupuesto]
-            S_V[Sistema SMC: Cuentas / Categorías]
-        end
-
-        subgraph SERVICES [services - Conexión API]
-            S_Auth[auth.service.js]
-            S_Fin[finanzas.service.js]
-            S_SMC[smc.service.js]
-            S_Cli[(supabaseClient.js)]
-        end
+        %% Módulos del Sistema SMC (Admin)
+        C_Cat[📁 categorias / Gestión SMC]:::modulo
+        C_Cuentas[📁 cuentas / Gestión SMC]:::modulo
+        C_User[📁 usuarios / Gestión SMC]:::modulo
     end
 
-    %% Conexiones y Relaciones del Sistema
-    Prot --> |Renderiza| Side
-    Prot --> |Renderiza| Nav
+    %% Relaciones de Flujo
+    C_Pages --> |Carga| C_Layout
+    C_Layout --> |Contiene| C_Common
     
-    VIEWS --> |Usa Componentes| UI
+    %% Conexión de vistas con componentes
+    C_Pages --> C_Auth
+    C_Pages --> C_Dash
+    C_Pages --> C_Gastos
+    C_Pages --> C_Ingresos
+    C_Pages --> C_Presup
     
-    A_V --> |Peticiones| S_Auth
-    F_V --> |Queries de Finanzas| S_Fin
-    S_V --> |Queries Especiales| S_SMC
-    
-    S_Auth & S_Fin & S_SMC --> |Cliente Global| S_Cli
+    %% Conexión vistas ADMIN
+    C_Pages --> C_Cat
+    C_Pages --> C_Cuentas
+    C_Pages --> C_User
