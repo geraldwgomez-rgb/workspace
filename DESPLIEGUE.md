@@ -1,16 +1,146 @@
-# taller publicacion 
+# Taller publicación
 
 ## Qué pasa, paso a paso, desde que alguien escribe una URL en el navegador hasta que ve la página. Menciona: resolución DNS, conexión TCP, handshake TLS, petición HTTP, respuesta.
 
-### cuando uno le da enter a una URL , el navegador busca una direccion IP (entiendo esta como el numero de telefono de la pagina , por el cual llamamos para buscarla) si el navegador no encuentra nada se " comunica " con un servidor que busca en una base de datos mundial y este le da la direccion IP . 
-### ya con esta direccion el navegador n necesita establecer  un canal de comunicacion mediante el TCP ( significa Protocolo de Control de Transmisión. Es el sistema que se encarga de que la información viaje por internet de forma segura, ordenada y sin pérdidas.) este se divide en 3 : 
--SYN (Sincronizar): Tu ordenador envía un paquete al servidor para iniciar la conexión.
+Cuando uno le da enter a una URL, el navegador busca una dirección IP (entiendo esta como el número de teléfono de la página, por el cual llamamos para buscarla) si el navegador no encuentra nada se "comunica" con un servidor que busca en una base de datos mundial y este le da la dirección IP.
 
--SYN-ACK (Sincronizar-Acuse de recibo): El servidor responde diciendo que está listo para hablar.
+Ya con esta dirección el navegador necesita establecer un canal de comunicación mediante el TCP (significa Protocolo de Control de Transmisión. Es el sistema que se encarga de que la información viaje por internet de forma segura, ordenada y sin pérdidas.) este se divide en 3:
 
--ACK (Acuse de recibo): Tu ordenador confirma la recepción, y el canal queda abierto.
+- **SYN** (Sincronizar): Tu ordenador envía un paquete al servidor para iniciar la conexión.
+- **SYN-ACK** (Sincronizar-Acuse de recibo): El servidor responde diciendo que está listo para hablar.
+- **ACK** (Acuse de recibo): Tu ordenador confirma la recepción, y el canal queda abierto.
 
-### Seguimos con handshake TLS o cifrado de seguridad que en palabras simples es la proteccion que hay para evitar espionajes ya que el navegador y el servidor se comparten una clave secreta unica para proteger la conexion . realizado esto el navegador pide el archivo principal de la pagina que te pedi a travez de la ip y con el canal abierto a eso se le llama Peticion HTTP. Y por ultimo la respuesta del servidor renderizando la HTTP o pagina .
+Seguimos con handshake TLS o cifrado de seguridad que en palabras simples es la protección que hay para evitar espionajes ya que el navegador y el servidor se comparten una clave secreta única para proteger la conexión. Realizado esto el navegador pide el archivo principal de la página que te pedí a través de la IP y con el canal abierto a eso se le llama Petición HTTP. Y por último la respuesta del servidor renderizando la HTTP o página.
 
+## 2. DNS
 
-## 2 . DNS 
+La DNS es el traductor de la dirección IP, de textos a números se le llama la agenda de contactos de internet por que funciona y tienen el mismo significado que una agenda del móvil.
+
+Los navegadores no buscan o se comunican con un solo servidor si no que siguen una jerarquía:
+
+- **Resolver recursivo**: es el detective del proceso, es el que recibe tu petición como google o cualquier otro operador. Si tu petición no está en la memoria de este lo busca en la jerarquía hasta encontrarla.
+- **Servidores raíz**: es la primera parada del detective y es el que lee el tipo de dominio que es la petición del detective ejemplo: cuando buscas una página termina en .com el root server lee el .com y te direcciona al encargado de ese dominio.
+- **Servidores TLD**: son los servidores de los dominios de nivel superior como .com, .org, .net, .co y con esta información lo envía al dominio donde los servidores autoritativos para que le dé la IP de la web.
+- **Servidores autoritativos**: es la última parada del detective y en donde se encuentra la información IP y se la da al detective para que este regrese a tu navegador y se abra la página.
+
+### Tipos de registro DNS
+
+- **A y AAAA**: estos son para apuntar al nombre de un dominio directamente a la IP de forma física del servidor web siendo A para el protocolo antiguo y AAAA para el moderno.
+- **CNAME (canonical name)**: Es un alias que apunta un nombre a otro nombre de dominio. No a una IP son como las subdivisiones del dominio para que apunten a la web.
+- **Alias / ANAME**: sirve para los dominios que son nombre y no IP es como un CNAME.
+- **MX**: indica a qué servidores de correos deben enviarse los emails para que te llegue la información.
+- **Txt**: permite al administrador de un dominio meter por máquinas para confugurar aspectos de seguridad y verificación.
+- **SFF**: es la verificación de la lista de quienes pueden enviar correos en nombre de tu dominio, esto para evitar suplantaciones.
+- **DKIM**: es la firma de tu dominio pública que especifica que el correo si es enviado por ti.
+- **Name server**: cómo su nombre lo indica es la especificación de a qué servidor autoritativo pertenece ese dominio, por si hay dudas o preguntas.
+- **Soa**: es como la carpeta de presentación de tu zona DNS, esta contiene el servidor maestro, el correo del administrador, el número de serie de la actualización y los tiempos de espera.
+- **TTL**: sigifica el tiempo de vida de un registro DNS, es un tiempo medido en segundos y cuando ese tiempo llegue a cero necesita preguntarle a tu segundos autoritativo por ti, además los cambios no se expresan inmediatamente por qué el registro DNS su dirección IP cambió pero las personas tienen la antigua dirección o DNS.
+- **Propagación DNS**: es el tiempo que tardan los servidores DNS de todo el mundo en conocer tus cambios remozados en tu dominio actualmente tarda entre 15 minutos o un par de horas.
+
+## 4. Punto
+
+### TLS/SSL
+
+Son los protocolos de seguridad para proteger (cifrar la comunicación del navegador y el servidor), SSL es la versión antigua y TLS es la moderna y mejorada.
+
+### Autoridad certificadora y qué es Let's Encrypt
+
+La autoridad certificadora es la validación de quien solicita un certificado para un dominio sea realmente su dueño. Y Let's Encrypt es una autoridad certificadora gratuita, automatizada y de código abierto su fin es que todo el mundo logre tener una HTTPS.
+
+### DV, OV y EV
+
+Son los certificados clasificados depende la investigación realizada por la autoridad certificadora. El DV es la que pide la información básica siendo ideal para blogs, webs personales y pymes. El OV es la información intermedia ya son empresas medianas, corporativas y escuelas. Y el EV la máxima investigación son para empresas grandes, bancos, pasarelas de pago y demás.
+
+### Certificado wildcard
+
+Es un único certificado que protege un dominio principal y todos sus subdominios.
+
+### Error: "Certificado no válido para este nombre" (Common Name Mismatch)
+
+Este error ocurre cuando el navegador descarga el certificado SSL del servidor, pero el nombre de dominio grabado dentro del certificado no coincide exactamente con la URL que escribiste en la barra de direcciones. ¿Por qué aparece al configurar un dominio personalizado? Es el problema más típico cuando conectas un dominio propio a plataformas como Shopify, Webflow, Firebase o un nuevo hosting.
+
+### HSTS
+
+Es una obligación de seguridad ya que cualquier atacante podría interferir si la página es http y no https.
+
+## 5
+
+### CDN
+
+Es una red global de servidores distribuidos geográficamente que trabajan juntos para entregar contenido de internet de la manera más rápida, esto ayuda a que cualquier persona del mundo pueda acceder a tu web en cuestión de milisegundos, a el tráfico de tu web para que no se caiga.
+
+### Diferencia entre sitio dinámico y estático
+
+En el sitio estático la web está lista y el dinámico son cambios de HTML en tiempo real.
+
+### Por qué una app de React (Vite/CRA) es un sitio estático al compilarse
+
+Cuando desarrollas en React, trabajas con componentes vivos pero al momento de compilarlos estos se convierten en archivos.
+
+### SPA
+
+Un SPA es una aplicación web que carga un único archivo HTML en la primera visita, lo que quiere decir que cuando un usuario navega por la página y se mueve entre páginas. No cambia en sí de página solo que JavaScript modifica dibuja la nueva. El problema de esto es que como todo está en una carpeta, el hosting tiene que dar constantemente una URL nueva lo que a su vez como todo está en un archivo al momento de recargar o reiniciar la página está da un error 404 por qué en sí en donde te metiste no existe ya que todo es un solo archivo.
+
+## 7.
+
+### Qué es BaaS
+
+Es una plataforma que automatiza y gestiona la infraestructura del lado del servidor ¿así cómo? Sí, te permite construir bases de datos, autentificación y almacenamiento desde tu frontend a través de APIs y SDKs con la facilidad de que no tengas que programar todo desde cero. Supabase es uno de los más famosos y este ofrece cinco componentes principales; postgreSQL, auth, storage, realtime y functions.
+
+### Anonkey
+
+Es la clave pública de tu proyecto Supabase y pero no otorga acceso libre a los datos, es específicamente para tu frontend.
+
+### Service role key
+
+La que jamás se debe exponer en el frontend, se salta las RLs y tiene acceso libre a tus bases de datos e información.
+
+### RLS
+
+Son las políticas de seguridad de tu proyecto, te permite indicar que puede hacer o no hacer un usuario en este. Su importancia radica en que si está desactivada cualquier persona que tenga la anon key pide copiar tus bases de datos.
+
+```sql
+-- 1. Permitir que los usuarios lean solo sus propias filas
+CREATE POLICY "Los usuarios pueden ver sus propios registros" 
+ON turesponsabilidad.tus_datos -- Cambia por el nombre de tu esquema y tabla
+FOR SELECT 
+TO authenticated 
+USING (auth.uid() = user_id);
+
+-- 2. Permitir que los usuarios actualicen solo sus propias filas
+CREATE POLICY "Los usuarios pueden editar sus propios registros" 
+ON turesponsabilidad.tus_datos 
+FOR UPDATE 
+TO authenticated 
+USING (auth.uid() = user_id)
+WITH CHECK (auth.uid() = user_id);
+```
+
+### Configuración de CORS y Site URL / Redirect URLs
+
+El Site URL es la URL principal de tu app o web, y las Redirect URLs son las rutas permitidas para que el sistema redirija al usuario para que confirme email o iniciar sesión con Google. Si tienes un localhost o entorno local cuando un usuario intente registrarse o recuperar su contraseña, fallará por que él no tiene tu computadora y solo verá unas páginas en blanco o errores por eso es importante configurar una URL de producción.
+
+### Límites de Supabase
+
+Supabase es gratuito pero no para ciertas cosas, tus proyectos tienen que estar abiertos por lo menos una vez a la semana ya que si no estos serán pausados por ahorro de recursos y además tienes un límite de 500 MB para la base de datos, 1 GB de espacio para almacenamiento, 50.000 usuarios activos mensuales y 500.000 ejecuciones mensuales.
+
+## 9
+
+### Npm run build y carpeta dist/
+
+Cuando ejecutas `npm run build` estás empaquetando y optimizando el código de tu proyecto para que cualquier persona del mundo pueda verlo sin necesidad de instalar las dependencias. Y la carpeta dist/ es el producto final de ese comando.
+
+- **Minificación**: Elimina por completo todos los espacios en blanco, saltos de línea, comentarios del código y renombra las variables largas por letras cortas.
+- **Tree Shaking (Sacudida del árbol)**: Imagina tu código y tus librerías instaladas como un árbol. El empaquetador "sacude" ese árbol para eliminar el código muerto que importaste pero que nunca estás usando en ninguna parte de la aplicación, evitando meter basura en producción.
+- **Code Splitting (División de código)**: En lugar de meter absolutamente toda tu aplicación en un único archivo JavaScript gigantesco, divide el código en "paquetes" más pequeños (chunks). Por ejemplo, el código del /dashboard solo se descargará cuando el usuario decida entrar a esa sección, haciendo que la carga inicial de la página principal sea instantánea.
+- **Hashing de nombres de archivo**: El empaquetador inyecta un código único y aleatorio en el nombre de tus archivos de producción (por ejemplo, index-7a8b9c.js).
+
+### ¿Qué es CI/CD y qué es GitHub Actions?
+
+**CI/CD**: es una práctica de desarrollo automatizada esta se encarga de revisar tu código subido en GitHub y el CD se encarga de que subirlo a tu hosting de producción si pasa la revisión.
+
+**GitHub Actions**: es la plataforma nativa de lo antes mencionado se encarga de decirle a la nube de GitHub que cada que alguien haga `git push` se haga lo anterior.
+
+### Desplegar desde una rama vs desplegar con un workflow de Actions
+
+La primera es la tradicional en donde tú haces todos los comandos, tu repositorio se llena de código y depende de tu PC para la página de producción. La segunda es la moderna en donde subes únicamente el código fuente limpio a la rama main, un servidor se encarga de compilarlo en la nube y publicarlo internamente, no se llena tu repositorio de código ilegible y es independiente de tu PC.
